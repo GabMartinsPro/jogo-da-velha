@@ -1,0 +1,54 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: cursive;
+}
+
+body {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-image: url("background.png");
+  background-size: cover;
+  background-attachment: fixed;
+  backdrop-filter: 65%;
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+h1, h2{
+  color: rgb(255, 255, 255);
+  text-align: center;
+  font-family: 'Times New Roman', Times, serif;
+}
+
+hr {
+  font-weight: bold;
+  height: 3px;
+  background: black;
+  margin-bottom: 10px;
+}
+
+.game {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+}
+
+.game button {
+  width: 100px;
+  height: 100px;
+  margin: 5px;
+  cursor: pointer;
+  font-size: 50px;
+}
+#status {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #ffffff; /* Cor para mensagens de vitória/empate */
+    margin-bottom: 20px;}
