@@ -13,7 +13,6 @@ body {
   background-image: url("background.png");
   background-size: cover;
   background-attachment: fixed;
-  backdrop-filter: 65%;
 }
 
 main {
