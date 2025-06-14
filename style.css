@@ -10,7 +10,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  background-image: url("background.png");
+  background-image: url("desfocado.png");
   background-size: cover;
   background-attachment: fixed;
 }
