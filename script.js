@@ -1,118 +1,92 @@
-const cells = document.querySelectorAll('.game button'); // Seleciona todos os botões que representam as células
-const currentPlayerDisplay = document.querySelector('.currentPlayer'); // Onde exibimos o jogador atual
-const statusDisplay = document.getElementById('status'); // Onde exibimos mensagens de status (vitória, empate)
-const resetButton = document.getElementById('reset-button'); // Nosso botão de reiniciar
+const cells = document.querySelectorAll('.game button');
+const currentPlayerDisplay = document.querySelector('.currentPlayer');
+const statusDisplay = document.getElementById('status');
+const resetButton = document.getElementById('reset-button');
 
-let board = ['', '', '', '', '', '', '', '', '']; // Representa o tabuleiro lógico (9 células)
-let currentPlayer = 'X'; // Começa com o jogador 'X'
-let gameActive = true; // Flag para saber se o jogo ainda está ativo
+let board = ['', '', '', '', '', '', '', '', ''];
+let currentPlayer = 'X';
+let gameActive = true;
+let scores = { X: 0, O: 0 };
 
-// Condições de vitória para o Jogo da Velha (índices das células)
 const winningConditions = [
-    [0, 1, 2], [3, 4, 5], [6, 7, 8], // Linhas
-    [0, 3, 6], [1, 4, 7], [2, 5, 8], // Colunas
-    [0, 4, 8], [2, 4, 6]             // Diagonais
+    [0, 1, 2], [3, 4, 5], [6, 7, 8],
+    [0, 3, 6], [1, 4, 7], [2, 5, 8],
+    [0, 4, 8], [2, 4, 6]
 ];
 
-// --- Funções Auxiliares ---
-
-// Atualiza a mensagem do jogador atual
 const updateCurrentPlayerDisplay = () => {
     currentPlayerDisplay.textContent = `Vez do: ${currentPlayer}`;
 };
 
-// Atualiza a mensagem de status (vitória/empate)
 const updateStatusDisplay = (message) => {
     statusDisplay.textContent = message;
 };
 
-// --- Lógica Principal do Jogo ---
+const updateScoreboard = () => {
+    document.getElementById('score-x').textContent = scores.X;
+    document.getElementById('score-o').textContent = scores.O;
+};
 
-// Função para verificar o resultado do jogo (vitória, empate ou continua)
 const checkGameResult = () => {
     let roundWon = false;
+    
     for (let i = 0; i < winningConditions.length; i++) {
-        const winCondition = winningConditions[i];
-        let a = board[winCondition[0]];
-        let b = board[winCondition[1]];
-        let c = board[winCondition[2]];
-
-        if (a === '' || b === '' || c === '') {
-            continue; // Se alguma célula da condição está vazia, pula
-        }
-        if (a === b && b === c) {
-            roundWon = true; // Encontramos um vencedor!
+        const [a, b, c] = winningConditions[i];
+        if (board[a] && board[a] === board[b] && board[a] === board[c]) {
+            roundWon = true;
             break;
         }
     }
 
     if (roundWon) {
         updateStatusDisplay(`O jogador ${currentPlayer} VENCEU!`);
-        gameActive = false; // Jogo acabou
+        scores[currentPlayer]++;
+        updateScoreboard();
+        gameActive = false;
         return;
     }
 
-    // Se o tabuleiro não inclui mais espaços vazios e ninguém venceu, é um empate
     if (!board.includes('')) {
         updateStatusDisplay('EMPATE!');
-        gameActive = false; // Jogo acabou
+        gameActive = false;
         return;
     }
 
-    // Se o jogo continua, troca o jogador
     currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
-    updateCurrentPlayerDisplay(); // Atualiza quem é o jogador da vez
+    updateCurrentPlayerDisplay();
 };
 
-// Função que lida com o clique em uma célula
 const handleCellClick = (event) => {
     const clickedCell = event.target;
-    // O 'data-i' no HTML começa de 1, mas arrays em JS começam de 0.
-    // Subtraímos 1 para obter o índice correto do array 'board'.
-    const clickedCellIndex = parseInt(clickedCell.getAttribute('data-i')) - 1; 
+    const clickedCellIndex = parseInt(clickedCell.getAttribute('data-i')) - 1;
 
-    // Se a célula já estiver preenchida ou o jogo não estiver ativo, não faz nada
     if (board[clickedCellIndex] !== '' || !gameActive) {
         return;
     }
 
-    // Atualiza o tabuleiro lógico e visual
-    board[clickedCellIndex] = currentPlayer; // Marca no array
-    clickedCell.textContent = currentPlayer; // Exibe 'X' ou 'O' no botão
-    // Opcional: Adicionar uma classe para estilização específica de 'X' ou 'O'
-    // clickedCell.classList.add(currentPlayer.toLowerCase()); 
-
-    checkGameResult(); // Verifica o resultado após a jogada
+    board[clickedCellIndex] = currentPlayer;
+    clickedCell.textContent = currentPlayer;
+    clickedCell.style.color = currentPlayer === 'X' ? '#2196F3' : '#F44336';
+    
+    checkGameResult();
 };
 
-// --- Função de Reiniciar o Jogo ---
 const resetGame = () => {
-    board = ['', '', '', '', '', '', '', '', '']; // Limpa o tabuleiro lógico
-    currentPlayer = 'X'; // Volta para 'X' como primeiro jogador
-    gameActive = true; // Ativa o jogo novamente
+    board = ['', '', '', '', '', '', '', '', ''];
+    currentPlayer = 'X';
+    gameActive = true;
 
-    updateCurrentPlayerDisplay(); // Atualiza a mensagem para a vez do 'X'
-    updateStatusDisplay(''); // Limpa a mensagem de status (vitória/empate)
+    updateCurrentPlayerDisplay();
+    updateStatusDisplay('');
 
-    // Limpa o texto de todas as células visuais
     cells.forEach(cell => {
         cell.textContent = '';
-        // Se você adicionou classes, remova-as aqui
-        // cell.classList.remove('x', 'o'); 
+        cell.style.color = '';
     });
-
-    console.log('Jogo Reiniciado!');
 };
 
-// --- Adicionar Event Listeners ---
-
-// Adiciona um evento de clique a cada célula
 cells.forEach(cell => cell.addEventListener('click', handleCellClick));
-
-// Adiciona o evento de clique ao botão de reiniciar
 resetButton.addEventListener('click', resetGame);
 
-// --- Inicialização ---
-
-// Inicia o jogo quando a página é carregada
-resetGame(); 
+updateCurrentPlayerDisplay();
+updateScoreboard();
