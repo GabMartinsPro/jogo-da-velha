@@ -82,3 +82,19 @@ hr {
   color: #ffffff;
   margin-bottom: 20px;
 }
+
+#reset-button {
+  background-color: rgba(0, 0, 0, 0.7);
+  padding: 15px;
+  border-radius: 10px;
+  color: white;
+  min-width: 150px;
+  float: left;
+  position: fixed;
+  top: 100px;
+  left: 520px;
+}
+
+#reset-button:hover {
+  background-color: rgba(22, 22, 22, 0.7);
+}
