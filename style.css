@@ -10,9 +10,13 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  background-image: url("desfocado.png");
+  background-image: url("fundo.jpg");
   background-size: cover;
   background-attachment: fixed;
+}
+.game button:hover{
+background-color: aquamarine;
+
 }
 
 .container {
@@ -46,7 +50,7 @@ main {
 }
 
 h1, h2 {
-  color: rgb(255, 255, 255);
+  color: rgb(250, 22, 6);
   text-align: center;
   font-family: 'Times New Roman', Times, serif;
 }
@@ -69,6 +73,7 @@ hr {
   margin: 5px;
   cursor: pointer;
   font-size: 50px;
+  border-radius: 10%;
 }
 
 #status {
