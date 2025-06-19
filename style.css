@@ -55,8 +55,9 @@ h1, h2 {
     color: rgb(77, 221, 166);
     font-size: 40px;
     text-shadow: 2px 2px 2px rgb(247, 248, 253);
-  
-  
+  background-color: rgba(0, 0, 0, 0.7);
+  padding: 15px;
+  border-radius: 10px;
 }
 
 hr {
@@ -69,6 +70,9 @@ hr {
 .game {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
+  background-color: rgba(0, 0, 0, 0.7);
+  padding: 15px;
+  border-radius: 10px;
 }
 
 .game button {
