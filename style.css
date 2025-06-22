@@ -6,13 +6,13 @@
   }
 
   body {
-    height: 100vh;
+    margin-top: 200px;
     display: flex;
     align-items: center;
     justify-content: center;
     background-image: url("fundo.jpg");
     background-size: cover;
-    background-attachment: fixed;
+    background-attachment: fixed; 
   }
   .game button:hover{
   background-color: aquamarine;
@@ -66,6 +66,7 @@
     height: 3px;
     background: black;
     margin-bottom: 10px;
+    width: 500px;
   }
 
   .game {
