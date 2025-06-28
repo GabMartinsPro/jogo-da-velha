@@ -37,11 +37,12 @@
   .scoreboard h2 {
     margin-bottom: 10px;
     text-align: center;
+    font-size: 60px;
   }
 
   .scores p {
     margin: 5px 0;
-    font-size: 1.2em;
+    font-size: 2.oem;
   }
 
   main {

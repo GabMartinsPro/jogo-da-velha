@@ -51,11 +51,12 @@ function updateScoreboard() {
 function handleCellClick(event) {
   const clickedCell = event.target;
   const clickedCellIndex = parseInt(clickedCell.dataset.i) - 1; // Ajusta para índice 0-8
-   clickedCell.style.color = currentPlayer === 'X' ? '#2196F3' : '#F44336';
-
+  
   if (gameBoard[clickedCellIndex] !== '' || !gameActive) {
     return; // Se a célula já estiver preenchida ou o jogo não estiver ativo, sai
   }
+
+  clickedCell.style.color = currentPlayer === 'X' ? '#2196F3' : '#F44336';
 
   gameBoard[clickedCellIndex] = currentPlayer;
   clickedCell.textContent = currentPlayer;
