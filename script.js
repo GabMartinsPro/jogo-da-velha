@@ -1,6 +1,6 @@
 const cells = document.querySelectorAll('.game button');
 const currentPlayerText = document.querySelector('.currentPlayer');
-const statusText = document.getElementById('status'); // Você já pode ter isso ou usar para mensagens gerais
+const statusText = document.getElementById('status');
 const scoreXElement = document.getElementById('score-x');
 const scoreOElement = document.getElementById('score-o');
 const resetButton = document.getElementById('reset-button'); // Botão de reset do placar
@@ -11,6 +11,11 @@ const modalMessage = document.getElementById('modal-message');
 const restartGameButton = document.getElementById('restart-game-button');
 const exitGameButton = document.getElementById('exit-game-button');
 const closeButton = document.querySelector('.close-button');
+
+// Adicione as referências para os elementos de áudio
+const winSound = document.getElementById('winSound');
+const drawSound = document.getElementById('drawSound');
+const clickSound = document.getElementById('clickSound'); // NOVA REFERÊNCIA PARA O SOM DE CLIQUE
 
 let currentPlayer = 'X';
 let gameBoard = ['', '', '', '', '', '', '', '', ''];
@@ -38,20 +43,33 @@ function initializeGame() {
     cell.removeAttribute('disabled'); // Reabilita os botões
   });
   modal.style.display = 'none'; // Garante que o modal esteja escondido
+
+  // PAUSA E REINICIA TODOS OS SONS AO INICIAR/REINICIAR O JOGO
+  if (winSound) {
+    winSound.pause();
+    winSound.currentTime = 0;
+  }
+  if (drawSound) {
+    drawSound.pause();
+    drawSound.currentTime = 0;
+  }
+  if (clickSound) { // PAUSA E REINICIA O SOM DE CLIQUE TAMBÉM
+    clickSound.pause();
+    clickSound.currentTime = 0;
+  }
 }
 
 // Atualiza o placar no HTML
 function updateScoreboard() {
   scoreXElement.textContent = scoreX;
   scoreOElement.textContent = scoreO;
-  
 }
 
 // Lida com o clique em uma célula
 function handleCellClick(event) {
   const clickedCell = event.target;
   const clickedCellIndex = parseInt(clickedCell.dataset.i) - 1; // Ajusta para índice 0-8
-  
+
   if (gameBoard[clickedCellIndex] !== '' || !gameActive) {
     return; // Se a célula já estiver preenchida ou o jogo não estiver ativo, sai
   }
@@ -60,8 +78,34 @@ function handleCellClick(event) {
 
   gameBoard[clickedCellIndex] = currentPlayer;
   clickedCell.textContent = currentPlayer;
+  
+  playClickSound(); // CHAMA A FUNÇÃO PARA TOCAR O SOM DE CLIQUE AQUI
 
   checkResult();
+}
+
+// Função para tocar o som de vitória
+function playWinSound() {
+  if (winSound) {
+    winSound.currentTime = 0;
+    winSound.play().catch(e => console.error("Erro ao tocar o som de vitória:", e));
+  }
+}
+
+// Função para tocar o som de empate
+function playDrawSound() {
+  if (drawSound) {
+    drawSound.currentTime = 0;
+    drawSound.play().catch(e => console.error("Erro ao tocar o som de empate:", e));
+  }
+}
+
+// NOVA FUNÇÃO PARA TOCAR O SOM DE CLIQUE
+function playClickSound() {
+  if (clickSound) { // Certifica-se de que o elemento de áudio de clique existe
+    clickSound.currentTime = 0; // Reinicia o áudio para o início
+    clickSound.play().catch(e => console.error("Erro ao tocar o som de clique:", e));
+  }
 }
 
 // Verifica o resultado do jogo
@@ -91,6 +135,7 @@ function checkResult() {
       scoreO++;
     }
     updateScoreboard();
+    playWinSound();
     showModal();
     return;
   }
@@ -99,6 +144,7 @@ function checkResult() {
   if (roundDraw) {
     gameActive = false;
     modalMessage.textContent = `Empate!`;
+    playDrawSound();
     showModal();
     return;
   }
@@ -118,7 +164,7 @@ function showModal() {
   modal.style.display = 'flex'; // Altera para 'flex' para exibir e centralizar
 }
 
-// Esconde o modal
+// Esconder o modal e deixar invisivel durante a partida
 function hideModal() {
   modal.style.display = 'none';
 }
@@ -135,13 +181,11 @@ resetButton.addEventListener('click', () => {
 // Event listeners para os botões do modal
 restartGameButton.addEventListener('click', initializeGame);
 exitGameButton.addEventListener('click', () => {
-  // Você pode redirecionar para outra página ou fechar a aba
   alert("Obrigado por jogar! A janela será fechada.");
-  window.close(); // Tenta fechar a janela (pode não funcionar em todos os navegadores devido a restrições de segurança)
-  // Ou, para um jogo mais complexo, você pode apenas esconder o modal e resetar o jogo sem limpar o placar geral
+  window.close();
 });
-closeButton.addEventListener('click', hideModal); // Botão 'x' para fechar o modal sem reiniciar
+closeButton.addEventListener('click', hideModal);
 
 // Inicializa o jogo ao carregar a página
 initializeGame();
-updateScoreboard(); // Garante que o placar seja 0-0 no início
+updateScoreboard();
