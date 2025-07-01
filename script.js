@@ -12,10 +12,10 @@ const restartGameButton = document.getElementById('restart-game-button');
 const exitGameButton = document.getElementById('exit-game-button');
 const closeButton = document.querySelector('.close-button');
 
-// Adicione as referências para os elementos de áudio
+// Adicionei as referências para os elementos de áudio
 const winSound = document.getElementById('winSound');
 const drawSound = document.getElementById('drawSound');
-const clickSound = document.getElementById('clickSound'); // NOVA REFERÊNCIA PARA O SOM DE CLIQUE
+const clickSound = document.getElementById('clickSound');
 
 let currentPlayer = 'X';
 let gameBoard = ['', '', '', '', '', '', '', '', ''];
